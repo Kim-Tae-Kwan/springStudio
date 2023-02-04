@@ -1,12 +1,17 @@
 package com.ktk.springStudio;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Identity;
 import java.util.Iterator;
 
@@ -20,12 +25,21 @@ import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.ResourceUtils;
+
+import com.ktk.springStudio.utils.JavaFileUtil;
 
 class SpringStudioApplicationTests {
 
 	@Test
 	void contextLoads() {
+		JavaFileUtil fileUtil = new JavaFileUtil();
 		final JavaClassSource javaClass = Roaster.create(JavaClassSource.class);
 		javaClass.setPackage("com.ktk.springStudio").setName("Member");
 
@@ -80,7 +94,7 @@ class SpringStudioApplicationTests {
 			.setLiteralValue("length", String.valueOf(100))
 			.setLiteralValue("nullable", String.valueOf(false));
 		
-		System.out.println(member);
+		fileUtil.save("test123.java", member.toString());
 	}
 
 }
